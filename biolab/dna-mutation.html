@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DNA Mutation Simulator | Hub of Tomorrow</title>
+
+  <link rel="stylesheet" href="dna-mutation.css">
+</head>
+
+<body>
+
+  <main class="mutation-page">
+
+    <!-- HEADER -->
+
+    <section class="mutation-header">
+      <span class="tool-label">BIOLAB TOOL 03</span>
+
+      <h1>DNA Mutation Simulator</h1>
+
+      <p>
+        Explore how changes in a DNA sequence can affect its genetic message.
+      </p>
+    </section>
+
+    <!-- BACK TO BIOLAB BUTTON -->
+
+    <a href="biolab.html" class="back-button">
+      ← Back to BioLab
+    </a>
+
+    <!-- ORIGINAL DNA -->
+
+    <section class="mutation-card">
+
+      <div class="section-heading">
+        <h2>Original DNA Sequence</h2>
+
+        <p>
+          Enter a DNA sequence using A, T, C, and G.
+        </p>
+      </div>
+
+      <label for="originalDna">DNA Sequence</label>
+
+      <textarea
+        id="originalDna"
+        rows="3"
+        placeholder="Example: ATGGCCTAA"
+        spellcheck="false"
+      >ATGGCCTAA</textarea>
+
+      <div class="sequence-info">
+        <span id="originalLength">Length: 9 bases</span>
+        <span id="originalStatus">Valid DNA</span>
+      </div>
+
+    </section>
+
+    <!-- MUTATION CONTROLS -->
+
+    <section class="mutation-card">
+
+      <div class="section-heading">
+        <h2>Choose a Mutation</h2>
+
+        <p>
+          Select one type of DNA change.
+        </p>
+      </div>
+
+      <div class="mutation-options">
+
+        <button
+          type="button"
+          class="mutation-option active"
+          data-mutation="substitution"
+        >
+          <strong>Substitution</strong>
+          <span>Replace one base</span>
+        </button>
+
+        <button
+          type="button"
+          class="mutation-option"
+          data-mutation="insertion"
+        >
+          <strong>Insertion</strong>
+          <span>Add one base</span>
+        </button>
+
+        <button
+          type="button"
+          class="mutation-option"
+          data-mutation="deletion"
+        >
+          <strong>Deletion</strong>
+          <span>Remove one base</span>
+        </button>
+
+      </div>
+
+      <div class="mutation-controls">
+
+        <div class="control-group">
+          <label for="positionInput">Position</label>
+
+          <input
+            type="number"
+            id="positionInput"
+            min="1"
+            value="4"
+          >
+        </div>
+
+        <div class="control-group">
+          <label for="baseInput" id="baseLabel">New Base</label>
+
+          <select id="baseInput">
+            <option value="A">A</option>
+            <option value="T">T</option>
+            <option value="C">C</option>
+            <option value="G">G</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        id="applyMutationButton"
+        class="apply-button"
+      >
+        Apply Substitution
+      </button>
+
+      <button
+        type="button"
+        id="resetButton"
+        class="reset-button"
+      >
+        Reset Sequence
+      </button>
+
+    </section>
+
+    <!-- RESULTS -->
+
+    <section class="mutation-card result-card">
+
+      <div class="section-heading">
+        <h2>Mutation Result</h2>
+
+        <p>
+          Compare the original sequence with the changed sequence.
+        </p>
+      </div>
+
+      <div class="result-block">
+        <h3>Original</h3>
+
+        <div
+          id="originalResult"
+          class="sequence-display"
+        >
+          ATGGCCTAA
+        </div>
+      </div>
+
+      <div class="result-block">
+        <h3>Mutated</h3>
+
+        <div
+          id="mutatedResult"
+          class="sequence-display"
+        >
+          ATGGCCTAA
+        </div>
+      </div>
+
+      <div class="result-block">
+        <h3>Difference</h3>
+
+        <p id="differenceResult">
+          No mutation has been applied yet.
+        </p>
+      </div>
+
+      <div class="result-block">
+        <h3>Educational Explanation</h3>
+
+        <p id="explanationResult">
+          A substitution changes one DNA base into another base.
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="dna-mutation.js"></script>
+
+</body>
+</html>

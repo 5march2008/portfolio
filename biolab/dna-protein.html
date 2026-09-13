@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DNA to Protein Translator | Hub Of Tomorrow</title>
+
+    <link rel="stylesheet" href="dna-protein.css">
+</head>
+
+<body>
+
+    <div class="protein-background">
+        <div class="protein-grid"></div>
+        <div class="protein-glow"></div>
+    </div>
+
+    <nav class="protein-nav">
+
+        <a href="biolab.html" class="protein-brand">
+            🧬 HUB OF TOMORROW
+            <span>BIOLAB</span>
+        </a>
+
+        <a href="biolab.html" class="back-button">
+            ← Back to BioLab
+        </a>
+
+    </nav>
+
+
+    <main class="protein-main">
+
+        <section class="protein-header">
+
+            <div class="tool-badge">
+                <span></span>
+                BIOLAB TOOL 02
+            </div>
+
+            <h1>
+                DNA to Protein
+                <strong>Translator</strong>
+            </h1>
+
+            <p>
+                Discover how genetic information is converted into
+                amino acids through the process of translation.
+            </p>
+
+        </section>
+
+
+        <section class="translator-panel">
+
+            <div class="panel-top">
+
+                <div>
+                    <span class="panel-label">GENETIC INPUT</span>
+
+                    <h2>Enter Your DNA Sequence</h2>
+                </div>
+
+                <span class="panel-tag">
+                    DNA → mRNA → PROTEIN
+                </span>
+
+            </div>
+
+
+            <label for="proteinInput">
+                DNA CODING SEQUENCE
+            </label>
+
+            <textarea
+                id="proteinInput"
+                placeholder="Example: ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG"
+                spellcheck="false"
+            ></textarea>
+
+
+            <div class="input-info">
+                <span id="proteinInputCount">0 bases</span>
+
+                <span>
+                    Use A, T, G, and C
+                </span>
+            </div>
+
+
+            <div class="action-row">
+
+                <button id="translateBtn" class="translate-button">
+                    🧬 Translate DNA
+                </button>
+
+                <button id="proteinSampleBtn" class="sample-button">
+                    Load Sample
+                </button>
+
+                <button id="proteinClearBtn" class="clear-button">
+                    Clear
+                </button>
+
+            </div>
+
+
+            <p id="proteinError" class="error-message"></p>
+
+        </section>
+
+
+        <section class="translation-results">
+
+            <div class="results-heading">
+
+                <div>
+                    <span class="panel-label">TRANSLATION COMPLETE</span>
+
+                    <h2>Translation Results</h2>
+                </div>
+
+                <span class="result-status">
+                    ● READY
+                </span>
+
+            </div>
+
+
+            <div class="translation-card">
+
+                <h3>DNA Sequence</h3>
+
+                <div id="dnaOutput" class="sequence-output">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="translation-card">
+
+                <h3>mRNA Sequence</h3>
+
+                <div id="mrnaOutput" class="sequence-output">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="translation-card">
+
+                <h3>Codons</h3>
+
+                <div id="codonOutput" class="sequence-output">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="translation-card">
+
+                <h3>Protein Sequence</h3>
+
+                <div id="proteinOutput" class="sequence-output protein-output">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="science-note">
+
+                <span>🔬</span>
+
+                <div>
+                    <h3>Scientific Note</h3>
+
+                    <p>
+                        This educational tool demonstrates the basic
+                        relationship between DNA, mRNA codons, and amino
+                        acids. It does not predict complete biological
+                        function or replace laboratory analysis.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer class="protein-footer">
+
+            <strong>HUB OF TOMORROW • BIOLAB</strong>
+
+            <p>
+                Learning biology through digital innovation.
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <script src="dna-protein.js"></script>
+
+</body>
+</html>

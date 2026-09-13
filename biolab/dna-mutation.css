@@ -1,0 +1,484 @@
+/* =====================================================
+   DNA MUTATION SIMULATOR
+   Hub of Tomorrow | BioLab Tool 03
+===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #07111f;
+  --card-background: rgba(15, 30, 50, 0.92);
+  --border: rgba(91, 224, 190, 0.25);
+  --primary: #5be0be;
+  --secondary: #72a7ff;
+  --text: #f2f7ff;
+  --muted: #a8b8cb;
+  --danger: #ff8f9b;
+  --warning: #ffd479;
+}
+
+body {
+  min-height: 100vh;
+  padding: 35px 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(67, 140, 255, 0.18),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(91, 224, 190, 0.12),
+      transparent 35%
+    ),
+    var(--background);
+}
+
+button,
+textarea,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mutation-page {
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.mutation-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tool-label {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 8px 15px;
+
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.mutation-header h1 {
+  margin-bottom: 14px;
+
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.15;
+
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--secondary)
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mutation-header p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.mutation-card {
+  margin-bottom: 22px;
+  padding: 25px;
+
+  background: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.22);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.section-heading {
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 1.35rem;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* =====================================================
+   FORM ELEMENTS
+===================================================== */
+
+label {
+  display: block;
+  margin-bottom: 9px;
+
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+textarea,
+input,
+select {
+  width: 100%;
+  padding: 13px 14px;
+
+  color: var(--text);
+  background: rgba(3, 12, 25, 0.85);
+
+  border: 1px solid rgba(114, 167, 255, 0.3);
+  border-radius: 12px;
+
+  outline: none;
+  transition: 0.25s ease;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(91, 224, 190, 0.12);
+}
+
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+.sequence-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  margin-top: 12px;
+
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+#originalStatus {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* =====================================================
+   MUTATION OPTIONS
+===================================================== */
+
+.mutation-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.mutation-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 17px;
+
+  text-align: left;
+  color: var(--text);
+  background: rgba(7, 18, 34, 0.85);
+
+  border: 1px solid rgba(114, 167, 255, 0.25);
+  border-radius: 14px;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.mutation-option strong {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.mutation-option span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.mutation-option:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+}
+
+.mutation-option:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.mutation-option.active {
+  border-color: var(--primary);
+  background: rgba(91, 224, 190, 0.12);
+  box-shadow: 0 0 20px rgba(91, 224, 190, 0.08);
+}
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+.mutation-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.control-group {
+  min-width: 0;
+  transition: opacity 0.25s ease;
+}
+
+.apply-button,
+.reset-button {
+  width: 100%;
+  padding: 14px 18px;
+
+  border-radius: 12px;
+
+  font-size: 0.95rem;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.apply-button {
+  margin-bottom: 12px;
+
+  color: #06131e;
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    #9af5dd
+  );
+
+  border: none;
+}
+
+.reset-button {
+  color: var(--text);
+  background: rgba(114, 167, 255, 0.12);
+  border: 1px solid rgba(114, 167, 255, 0.3);
+}
+
+.apply-button:hover,
+.reset-button:hover {
+  transform: translateY(-2px);
+}
+
+.apply-button:active,
+.reset-button:active {
+  transform: translateY(0);
+}
+
+.apply-button:focus-visible,
+.reset-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* =====================================================
+   RESULTS
+===================================================== */
+
+.result-card {
+  border-color: rgba(114, 167, 255, 0.3);
+}
+
+.result-block {
+  margin-bottom: 20px;
+}
+
+.result-block:last-child {
+  margin-bottom: 0;
+}
+
+.result-block h3 {
+  margin-bottom: 9px;
+
+  color: var(--secondary);
+  font-size: 0.95rem;
+}
+
+.sequence-display {
+  display: flex;
+  align-items: center;
+
+  min-height: 55px;
+  padding: 15px;
+
+  color: var(--primary);
+  background: rgba(3, 12, 25, 0.8);
+
+  border: 1px solid rgba(91, 224, 190, 0.2);
+  border-radius: 12px;
+
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  line-height: 1.7;
+
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+#differenceResult,
+#explanationResult {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+#differenceResult {
+  color: var(--warning);
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+@media (max-width: 650px) {
+  body {
+    padding: 22px 12px;
+  }
+
+  .mutation-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .mutation-options {
+    grid-template-columns: 1fr;
+  }
+
+  .mutation-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .mutation-header h1 {
+    font-size: 2rem;
+  }
+
+  .sequence-display {
+    font-size: 0.88rem;
+  }
+}
+
+/* =====================================================
+   BACK TO BIOLAB BUTTON
+===================================================== */
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: auto;
+  margin-bottom: 22px;
+  padding: 9px 16px;
+
+  color: #06131e;
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    #9af5dd
+  );
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-decoration: none;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(91, 224, 190, 0.2);
+}
+
+.back-button:active {
+  transform: translateY(0);
+}
+
+.back-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}/* TEMPORARY BUTTON TEST */
+
+a.back-button {
+  display: inline-flex !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  height: auto !important;
+
+  margin: 0 0 22px 0 !important;
+  padding: 8px 14px !important;
+
+  background: #ff00ff !important;
+  color: #ffffff !important;
+
+  border: 2px solid #ffffff !important;
+  border-radius: 8px !important;
+
+  font-size: 14px !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+
+  position: relative !important;
+  transform: none !important;
+}

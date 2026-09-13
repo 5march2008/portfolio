@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Microbe Detective | Hub Of Tomorrow BioLab</title>
+
+    <link rel="stylesheet" href="microbe-detective.css">
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+
+    <div class="background-grid"></div>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <!-- BACK TO BIOLAB -->
+
+    <a href="biolab.html" class="back-button">
+        ← Back to BioLab
+    </a>
+
+    <!-- HEADER -->
+
+    <header class="lab-header">
+
+        <div class="header-brand">
+
+            <span class="brand-symbol">🔬</span>
+
+            <div>
+                <p class="brand-label">
+                    HUB OF TOMORROW
+                </p>
+
+                <h1>
+                    Microbe Detective
+                </h1>
+            </div>
+
+        </div>
+
+        <div class="header-status">
+            <span class="status-dot"></span>
+            LAB ONLINE
+        </div>
+
+    </header>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="lab-container">
+
+        <section class="intro-section">
+
+            <div class="intro-badge">
+                BIOLOGY INVESTIGATION / 04
+            </div>
+
+            <h2>
+                Identify the
+                <span>Unknown Microbe</span>
+            </h2>
+
+            <p>
+                Examine biological clues, investigate microbial behavior,
+                and identify the mystery microorganism like a real laboratory detective.
+            </p>
+
+        </section>
+
+        <section class="progress-panel">
+
+            <div class="progress-heading">
+
+                <div>
+                    <span class="small-label">
+                        INVESTIGATION PROGRESS
+                    </span>
+
+                    <h3 id="progressTitle">
+                        Case 01 of 04
+                    </h3>
+                </div>
+
+                <span id="progressCounter">
+                    0 / 8 clues examined
+                </span>
+
+            </div>
+
+            <div class="progress-track">
+                <div id="progressBar"></div>
+            </div>
+
+        </section>
+
+        <section class="investigation-layout">
+
+            <!-- MICROBE VIEW -->
+
+            <div class="microbe-panel panel-card">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <span class="small-label">
+                            VIRTUAL MICROSCOPE
+                        </span>
+
+                        <h3>
+                            Specimen View
+                        </h3>
+                    </div>
+
+                    <span class="live-tag">
+                        LIVE SAMPLE
+                    </span>
+
+                </div>
+
+                <div class="microscope-screen">
+
+                    <div class="scan-line"></div>
+
+                    <div class="microbe-visual" id="microbeVisual">
+
+                        <div class="microbe-body">
+
+                            <span class="microbe-flag flag-one"></span>
+                            <span class="microbe-flag flag-two"></span>
+                            <span class="microbe-flag flag-three"></span>
+
+                            <span class="microbe-detail detail-one"></span>
+                            <span class="microbe-detail detail-two"></span>
+                            <span class="microbe-detail detail-three"></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="microscope-info">
+
+                        <span>
+                            MAGNIFICATION: 1000×
+                        </span>
+
+                        <span id="sampleType">
+                            UNKNOWN SAMPLE
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="specimen-name">
+
+                    <span class="small-label">
+                        SPECIMEN CODE
+                    </span>
+
+                    <strong id="specimenCode">
+                        MD-001
+                    </strong>
+
+                    <p id="specimenDescription">
+                        A mysterious microorganism has been discovered.
+                        Examine the clues to identify it.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CLUES -->
+
+            <div class="clues-panel panel-card">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <span class="small-label">
+                            LABORATORY EVIDENCE
+                        </span>
+
+                        <h3>
+                            Examine the Clues
+                        </h3>
+                    </div>
+
+                    <span class="evidence-count" id="evidenceCount">
+                        8 clues
+                    </span>
+
+                </div>
+
+                <div class="clue-grid" id="clueGrid"></div>
+
+                <div class="clue-result" id="clueResult">
+                    Select a clue to examine the specimen.
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- IDENTIFICATION -->
+
+        <section class="identification-panel panel-card">
+
+            <div class="panel-heading">
+
+                <div>
+                    <span class="small-label">
+                        FINAL ANALYSIS
+                    </span>
+
+                    <h3>
+                        Identify the Microorganism
+                    </h3>
+                </div>
+
+                <span class="analysis-tag">
+                    SCIENTIFIC CASE
+                </span>
+
+            </div>
+
+            <p class="question-text">
+                Based on the evidence you have examined,
+                which microorganism is the best match?
+            </p>
+
+            <div class="answer-grid" id="answerGrid">
+
+                <button class="answer-option" data-answer="bacteria">
+                    <span class="answer-icon">🦠</span>
+
+                    <span>
+                        <strong>Bacterium</strong>
+                        <small>Single-celled prokaryote</small>
+                    </span>
+                </button>
+
+                <button class="answer-option" data-answer="yeast">
+                    <span class="answer-icon">🍞</span>
+
+                    <span>
+                        <strong>Yeast</strong>
+                        <small>Single-celled fungus</small>
+                    </span>
+                </button>
+
+                <button class="answer-option" data-answer="protozoan">
+                    <span class="answer-icon">🧫</span>
+
+                    <span>
+                        <strong>Protozoan</strong>
+                        <small>Single-celled eukaryote</small>
+                    </span>
+                </button>
+
+                <button class="answer-option" data-answer="algae">
+                    <span class="answer-icon">🌿</span>
+
+                    <span>
+                        <strong>Microalga</strong>
+                        <small>Photosynthetic microorganism</small>
+                    </span>
+                </button>
+
+            </div>
+
+            <div class="feedback-box" id="feedbackBox" aria-live="polite">
+                Your laboratory report will appear here.
+            </div>
+
+            <div class="action-row">
+
+                <button class="secondary-button" id="resetButton">
+                    ↻ Reset Case
+                </button>
+
+                <button class="primary-button" id="nextButton" disabled>
+                    Next Case →
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- SCIENCE NOTE -->
+
+        <section class="science-note">
+
+            <div class="science-note-icon">
+                💡
+            </div>
+
+            <div>
+                <h3>
+                    Detective Note
+                </h3>
+
+                <p>
+                    Microorganisms are identified by combining several clues.
+                    One characteristic alone is usually not enough.
+                    Scientists compare structure, metabolism, habitat,
+                    and behavior before reaching a conclusion.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer class="lab-footer">
+
+        <p>
+            Designed for Hub Of Tomorrow | BioLab
+        </p>
+
+        <a href="biolab.html">
+            Return to Laboratory →
+        </a>
+
+    </footer>
+
+    <script src="microbe-detective.js"></script>
+
+</body>
+</html>

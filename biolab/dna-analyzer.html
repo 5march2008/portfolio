@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DNA Sequence Analyzer | Hub of Tomorrow</title>
+
+  <style>
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #e9fff8;
+      background:
+        radial-gradient(circle at top left, rgba(0, 255, 190, 0.12), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(65, 105, 255, 0.14), transparent 35%),
+        #06131e;
+      overflow-x: hidden;
+    }
+
+    button,
+    textarea,
+    a {
+      font: inherit;
+    }
+
+    /* =====================================================
+       ANIMATED DNA BACKGROUND
+    ===================================================== */
+
+    .dna-background {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dna-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(91, 224, 190, 0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91, 224, 190, 0.22) 1px, transparent 1px);
+      background-size: 42px 42px;
+      animation: gridMove 18s linear infinite;
+    }
+
+    .dna-glow {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: rgba(0, 255, 190, 0.08);
+      filter: blur(80px);
+      animation: glowMove 12s ease-in-out infinite alternate;
+    }
+
+    .dna-glow:nth-child(2) {
+      right: -150px;
+      bottom: -150px;
+      background: rgba(80, 100, 255, 0.12);
+      animation-delay: 3s;
+    }
+
+    @keyframes gridMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(42px);
+      }
+    }
+
+    @keyframes glowMove {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(80px, 50px) scale(1.25);
+      }
+    }
+
+    /* =====================================================
+       MAIN LAYOUT
+    ===================================================== */
+
+    .dna-main {
+      position: relative;
+      z-index: 2;
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 60px;
+    }
+
+    /* =====================================================
+       BACK BUTTON
+    ===================================================== */
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      padding: 11px 18px;
+      color: #06131e;
+      background: linear-gradient(135deg, #5be0be, #9af5dd);
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(91, 224, 190, 0.12);
+      transition: 0.25s ease;
+    }
+
+    .back-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(91, 224, 190, 0.3);
+    }
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .dna-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .dna-icon {
+      font-size: 4rem;
+      margin-bottom: 12px;
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .dna-header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #5be0be, #ffffff, #8ba9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .dna-header p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: #a9c9cc;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* =====================================================
+       MAIN CARD
+    ===================================================== */
+
+    .analyzer-card {
+      padding: 28px;
+      border: 1px solid rgba(91, 224, 190, 0.22);
+      border-radius: 24px;
+      background: rgba(8, 27, 39, 0.88);
+      box-shadow:
+        0 20px 70px rgba(0, 0, 0, 0.25),
+        inset 0 0 35px rgba(91, 224, 190, 0.025);
+      backdrop-filter: blur(15px);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #9af5dd;
+      font-size: 1.25rem;
+    }
+
+    .section-description {
+      margin-bottom: 18px;
+      color: #9db8bd;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    /* =====================================================
+       TEXTAREA
+    ===================================================== */
+
+    .sequence-input {
+      width: 100%;
+      min-height: 180px;
+      padding: 18px;
+      resize: vertical;
+      color: #dffff5;
+      background: rgba(2, 13, 22, 0.85);
+      border: 1px solid rgba(91, 224, 190, 0.3);
+      border-radius: 15px;
+      outline: none;
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      line-height: 1.8;
+      letter-spacing: 1px;
+      transition: 0.25s ease;
+    }
+
+    .sequence-input::placeholder {
+      color: #66858c;
+    }
+
+    .sequence-input:focus {
+      border-color: #5be0be;
+      box-shadow: 0 0 0 3px rgba(91, 224, 190, 0.1);
+    }
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .action-button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+
+    .primary-button {
+      color: #06131e;
+      background: linear-gradient(135deg, #5be0be, #9af5dd);
+    }
+
+    .secondary-button {
+      color: #dffff5;
+      background: rgba(91, 224, 190, 0.08);
+      border: 1px solid rgba(91, 224, 190, 0.3);
+    }
+
+    .action-button:hover {
+      transform: translateY(-3px);
+    }
+
+    .primary-button:hover {
+      box-shadow: 0 8px 25px rgba(91, 224, 190, 0.25);
+    }
+
+    .secondary-button:hover {
+      background: rgba(91, 224, 190, 0.16);
+    }
+
+    /* =====================================================
+       ERROR MESSAGE
+    ===================================================== */
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px 16px;
+      border-radius: 12px;
+      color: #ffd9d9;
+      background: rgba(255, 80, 80, 0.1);
+      border: 1px solid rgba(255, 100, 100, 0.3);
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    /* =====================================================
+       RESULTS
+    ===================================================== */
+
+    .results-section {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .results-section.show {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .result-box {
+      padding: 20px;
+      border: 1px solid rgba(91, 224, 190, 0.18);
+      border-radius: 16px;
+      background: rgba(4, 18, 29, 0.8);
+    }
+
+    .result-label {
+      margin-bottom: 8px;
+      color: #8ba9b1;
+      font-size: 0.85rem;
+    }
+
+    .result-value {
+      color: #9af5dd;
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .result-box.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .sequence-output {
+      word-break: break-all;
+      color: #dffff5;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* =====================================================
+       BASE COUNTS
+    ===================================================== */
+
+    .base-bars {
+      display: grid;
+      gap: 13px;
+      margin-top: 18px;
+    }
+
+    .base-row {
+      display: grid;
+      grid-template-columns: 35px 1fr 55px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .base-name {
+      color: #9af5dd;
+      font-weight: 800;
+    }
+
+    .bar-background {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .bar-fill {
+      width: 0;
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #5be0be, #8ba9ff);
+      transition: width 0.8s ease;
+    }
+
+    .base-count {
+      color: #c8e6e5;
+      text-align: right;
+      font-size: 0.85rem;
+    }
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .dna-footer {
+      margin-top: 28px;
+      color: #66858c;
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* =====================================================
+       RESPONSIVE DESIGN
+    ===================================================== */
+
+    @media (max-width: 650px) {
+      .dna-main {
+        width: 94%;
+        padding-top: 20px;
+      }
+
+      .analyzer-card {
+        padding: 20px;
+        border-radius: 18px;
+      }
+
+      .dna-icon {
+        font-size: 3rem;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-box.full-width {
+        grid-column: auto;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .action-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       BACKGROUND
+  ===================================================== -->
+
+  <div class="dna-background" aria-hidden="true">
+    <div class="dna-grid"></div>
+    <div class="dna-glow"></div>
+    <div class="dna-glow"></div>
+  </div>
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ===================================================== -->
+
+  <main class="dna-main">
+
+    <!-- Back button -->
+    <a href="biolab.html" class="back-button">
+      ← Back to BioLab
+    </a>
+
+    <!-- Header -->
+    <header class="dna-header">
+      <div class="dna-icon">🧬</div>
+
+      <h1>DNA Sequence Analyzer</h1>
+
+      <p>
+        Explore a DNA sequence by calculating its length, GC content,
+        nucleotide composition, and reverse complement.
+      </p>
+    </header>
+
+    <!-- Analyzer Card -->
+    <section class="analyzer-card">
+
+      <h2 class="section-title">
+        🧪 Enter DNA Sequence
+      </h2>
+
+      <p class="section-description">
+        Enter a DNA sequence using the letters A, T, C, and G.
+        Spaces and line breaks will be removed automatically.
+      </p>
+
+      <textarea
+        id="dnaSequence"
+        class="sequence-input"
+        placeholder="Example: ATGCGTACCGTAGCTAGCTAGGCTA"
+        spellcheck="false"
+        aria-label="DNA sequence input"
+      ></textarea>
+
+      <div class="button-row">
+        <button
+          type="button"
+          id="analyzeButton"
+          class="action-button primary-button"
+        >
+          Analyze Sequence
+        </button>
+
+        <button
+          type="button"
+          id="exampleButton"
+          class="action-button secondary-button"
+        >
+          Load Example
+        </button>
+
+        <button
+          type="button"
+          id="clearButton"
+          class="action-button secondary-button"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div
+        id="errorMessage"
+        class="message"
+        role="alert"
+      ></div>
+
+      <!-- Results -->
+      <section
+        id="resultsSection"
+        class="results-section"
+        aria-live="polite"
+      >
+
+        <h2 class="section-title">
+          📊 Analysis Results
+        </h2>
+
+        <div class="results-grid">
+
+          <div class="result-box">
+            <div class="result-label">
+              Sequence Length
+            </div>
+
+            <div
+              id="sequenceLength"
+              class="result-value"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="result-box">
+            <div class="result-label">
+              GC Content
+            </div>
+
+            <div
+              id="gcContent"
+              class="result-value"
+            >
+              0%
+            </div>
+          </div>
+
+          <div class="result-box">
+            <div class="result-label">
+              AT Content
+            </div>
+
+            <div
+              id="atContent"
+              class="result-value"
+            >
+              0%
+            </div>
+          </div>
+
+          <div class="result-box">
+            <div class="result-label">
+              Estimated Base Pairs
+            </div>
+
+            <div
+              id="basePairs"
+              class="result-value"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="result-box full-width">
+            <div class="result-label">
+              Nucleotide Composition
+            </div>
+
+            <div class="base-bars">
+
+              <div class="base-row">
+                <div class="base-name">A</div>
+
+                <div class="bar-background">
+                  <div
+                    id="barA"
+                    class="bar-fill"
+                  ></div>
+                </div>
+
+                <div
+                  id="countA"
+                  class="base-count"
+                >
+                  0
+                </div>
+              </div>
+
+              <div class="base-row">
+                <div class="base-name">T</div>
+
+                <div class="bar-background">
+                  <div
+                    id="barT"
+                    class="bar-fill"
+                  ></div>
+                </div>
+
+                <div
+                  id="countT"
+                  class="base-count"
+                >
+                  0
+                </div>
+              </div>
+
+              <div class="base-row">
+                <div class="base-name">C</div>
+
+                <div class="bar-background">
+                  <div
+                    id="barC"
+                    class="bar-fill"
+                  ></div>
+                </div>
+
+                <div
+                  id="countC"
+                  class="base-count"
+                >
+                  0
+                </div>
+              </div>
+
+              <div class="base-row">
+                <div class="base-name">G</div>
+
+                <div class="bar-background">
+                  <div
+                    id="barG"
+                    class="bar-fill"
+                  ></div>
+                </div>
+
+                <div
+                  id="countG"
+                  class="base-count"
+                >
+                  0
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="result-box full-width">
+            <div class="result-label">
+              Reverse Complement
+            </div>
+
+            <div
+              id="reverseComplement"
+              class="sequence-output"
+            >
+              —
+            </div>
+          </div>
+
+          <div class="result-box full-width">
+            <div class="result-label">
+              Cleaned DNA Sequence
+            </div>
+
+            <div
+              id="cleanedSequence"
+              class="sequence-output"
+            >
+              —
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </section>
+
+    <footer class="dna-footer">
+      Built for learning and exploration by
+      <strong>Hub of Tomorrow</strong>.
+      This tool is educational and does not replace laboratory analysis.
+    </footer>
+
+  </main>
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ===================================================== -->
+
+  <script>
+    const dnaSequenceInput = document.getElementById("dnaSequence");
+
+    const analyzeButton = document.getElementById("analyzeButton");
+    const exampleButton = document.getElementById("exampleButton");
+    const clearButton = document.getElementById("clearButton");
+
+    const errorMessage = document.getElementById("errorMessage");
+    const resultsSection = document.getElementById("resultsSection");
+
+    const sequenceLength = document.getElementById("sequenceLength");
+    const gcContent = document.getElementById("gcContent");
+    const atContent = document.getElementById("atContent");
+    const basePairs = document.getElementById("basePairs");
+
+    const reverseComplement = document.getElementById("reverseComplement");
+    const cleanedSequence = document.getElementById("cleanedSequence");
+
+    const countA = document.getElementById("countA");
+    const countT = document.getElementById("countT");
+    const countC = document.getElementById("countC");
+    const countG = document.getElementById("countG");
+
+    const barA = document.getElementById("barA");
+    const barT = document.getElementById("barT");
+    const barC = document.getElementById("barC");
+    const barG = document.getElementById("barG");
+
+    const exampleSequence =
+      "ATGCGTACCGTAGCTAGCTAGGCTAACCGGTATCGATCGTAGCTAGCTAGGCTA";
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add("show");
+    }
+
+    function hideError() {
+      errorMessage.textContent = "";
+      errorMessage.classList.remove("show");
+    }
+
+    function getCleanSequence() {
+      return dnaSequenceInput.value
+        .toUpperCase()
+        .replace(/\s+/g, "");
+    }
+
+    function calculatePercentage(value, total) {
+      if (total === 0) {
+        return "0.00%";
+      }
+
+      return ((value / total) * 100).toFixed(2) + "%";
+    }
+
+    function getReverseComplement(sequence) {
+      const complementMap = {
+        A: "T",
+        T: "A",
+        C: "G",
+        G: "C"
+      };
+
+      return sequence
+        .split("")
+        .reverse()
+        .map(base => complementMap[base])
+        .join("");
+    }
+
+    function updateBaseResult(base, count, total, bar, countElement) {
+      countElement.textContent = count;
+
+      const percentage = total === 0
+        ? 0
+        : (count / total) * 100;
+
+      bar.style.width = percentage + "%";
+    }
+
+    function analyzeDNA() {
+      hideError();
+
+      const sequence = getCleanSequence();
+
+      if (sequence.length === 0) {
+        resultsSection.classList.remove("show");
+        showError("Please enter a DNA sequence first.");
+        return;
+      }
+
+      const validDNA = /^[ATCG]+$/;
+
+      if (!validDNA.test(sequence)) {
+        resultsSection.classList.remove("show");
+        showError(
+          "Invalid DNA sequence. Please use only the letters A, T, C, and G."
+        );
+        return;
+      }
+
+      const total = sequence.length;
+
+      const aCount = (sequence.match(/A/g) || []).length;
+      const tCount = (sequence.match(/T/g) || []).length;
+      const cCount = (sequence.match(/C/g) || []).length;
+      const gCount = (sequence.match(/G/g) || []).length;
+
+      const gcCount = cCount + gCount;
+      const atCount = aCount + tCount;
+
+      sequenceLength.textContent = total;
+      gcContent.textContent = calculatePercentage(gcCount, total);
+      atContent.textContent = calculatePercentage(atCount, total);
+      basePairs.textContent = Math.floor(total / 2);
+
+      updateBaseResult("A", aCount, total, barA, countA);
+      updateBaseResult("T", tCount, total, barT, countT);
+      updateBaseResult("C", cCount, total, barC, countC);
+      updateBaseResult("G", gCount, total, barG, countG);
+
+      reverseComplement.textContent =
+        getReverseComplement(sequence);
+
+      cleanedSequence.textContent = sequence;
+
+      resultsSection.classList.add("show");
+    }
+
+    analyzeButton.addEventListener("click", analyzeDNA);
+
+    exampleButton.addEventListener("click", function () {
+      dnaSequenceInput.value = exampleSequence;
+      analyzeDNA();
+    });
+
+    clearButton.addEventListener("click", function () {
+      dnaSequenceInput.value = "";
+      hideError();
+      resultsSection.classList.remove("show");
+      dnaSequenceInput.focus();
+    });
+
+    dnaSequenceInput.addEventListener("input", function () {
+      hideError();
+    });
+  </script>
+
+</body>
+</html>

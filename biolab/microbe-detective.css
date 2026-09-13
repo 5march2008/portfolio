@@ -1,0 +1,582 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #07111f;
+    --panel: rgba(13, 31, 49, 0.9);
+    --border: rgba(108, 205, 255, 0.2);
+    --border-strong: rgba(108, 205, 255, 0.55);
+    --text: #eefaff;
+    --muted: #91b4c9;
+    --cyan: #58e4ff;
+    --blue: #5b8dff;
+    --green: #6dffb1;
+    --yellow: #ffe58b;
+    --red: #ff7e9d;
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 15% 10%, rgba(42, 135, 190, .14), transparent 30%),
+        radial-gradient(circle at 85% 85%, rgba(80, 90, 220, .12), transparent 32%),
+        var(--background);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+/* BACKGROUND */
+
+.background-grid {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(99, 211, 255, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 211, 255, .035) 1px, transparent 1px);
+    background-size: 38px 38px;
+}
+
+.background-glow {
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: .12;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.glow-one {
+    top: -180px;
+    left: -150px;
+    background: var(--cyan);
+}
+
+.glow-two {
+    right: -180px;
+    bottom: -150px;
+    background: var(--blue);
+}
+
+/* BACK BUTTON */
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 100;
+    margin: 22px 0 0 max(4%, calc((100% - 1400px) / 2));
+    padding: 12px 20px;
+    color: #07111f;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 800;
+    box-shadow: 0 8px 25px rgba(88, 228, 255, .2);
+    transition: .25s ease;
+}
+
+.back-button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+}
+
+/* HEADER */
+
+.lab-header {
+    width: min(1400px, 92%);
+    margin: 22px auto 0;
+    padding: 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-symbol {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border-strong);
+    border-radius: 15px;
+    background: rgba(88, 228, 255, .08);
+    font-size: 1.6rem;
+}
+
+.brand-label,
+.small-label {
+    color: var(--cyan);
+    font-size: .66rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+}
+
+.header-brand h1 {
+    margin-top: 4px;
+    font-size: clamp(1.1rem, 2vw, 1.55rem);
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--green);
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 14px var(--green);
+}
+
+/* MAIN */
+
+.lab-container {
+    width: min(1400px, 92%);
+    margin: auto;
+    padding: 65px 0 45px;
+}
+
+.intro-section {
+    max-width: 760px;
+    margin-bottom: 42px;
+}
+
+.intro-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    color: var(--cyan);
+    background: rgba(88, 228, 255, .06);
+    font-size: .67rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.intro-section h2 {
+    margin-top: 20px;
+    font-size: clamp(2.3rem, 5vw, 4.7rem);
+    line-height: 1.03;
+}
+
+.intro-section h2 span {
+    display: block;
+    color: var(--cyan);
+}
+
+.intro-section p,
+.specimen-name p,
+.science-note p,
+.question-text {
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.intro-section p {
+    max-width: 650px;
+    margin-top: 22px;
+}
+
+/* PANELS */
+
+.panel-card,
+.progress-panel {
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(24, 55, 80, .8), rgba(8, 23, 39, .92));
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+}
+
+.progress-panel {
+    padding: 24px;
+    margin-bottom: 26px;
+}
+
+.progress-heading,
+.panel-heading,
+.action-row,
+.microscope-info,
+.lab-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.progress-heading h3,
+.panel-heading h3 {
+    margin-top: 8px;
+}
+
+#progressCounter {
+    color: var(--muted);
+    font-size: .8rem;
+}
+
+.progress-track {
+    height: 8px;
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .07);
+}
+
+#progressBar {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    transition: width .35s ease;
+}
+
+.investigation-layout {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    gap: 26px;
+}
+
+.panel-card {
+    padding: 28px;
+}
+
+.panel-heading {
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.live-tag,
+.analysis-tag,
+.evidence-count {
+    padding: 7px 10px;
+    border: 1px solid rgba(109, 255, 177, .3);
+    border-radius: 999px;
+    color: var(--green);
+    background: rgba(109, 255, 177, .07);
+    font-size: .62rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* MICROSCOPE */
+
+.microscope-screen {
+    position: relative;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 1px solid rgba(88, 228, 255, .24);
+    border-radius: 20px;
+    background: radial-gradient(circle, rgba(36, 118, 145, .24), transparent 55%), #06131e;
+}
+
+.scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--cyan);
+    opacity: .7;
+}
+
+.microbe-visual {
+    min-height: 290px;
+    display: grid;
+    place-items: center;
+}
+
+.microbe-body {
+    position: relative;
+    width: 180px;
+    height: 105px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1b8c8a, #65ffc0);
+    border: 3px solid rgba(186, 255, 228, .75);
+    box-shadow: 0 0 25px rgba(109, 255, 177, .55);
+}
+
+.microbe-flag {
+    position: absolute;
+    right: -58px;
+    width: 75px;
+    height: 2px;
+    background: var(--green);
+}
+
+.flag-one { top: 25px; transform: rotate(-28deg); }
+.flag-two { top: 52px; transform: rotate(8deg); }
+.flag-three { top: 80px; transform: rotate(30deg); }
+
+.microbe-detail {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+}
+
+.detail-one { top: 30px; left: 78px; }
+.detail-two { top: 58px; left: 105px; }
+.detail-three { top: 45px; left: 28px; }
+
+.microscope-info {
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: .65rem;
+}
+
+.specimen-name {
+    margin-top: 22px;
+}
+
+.specimen-name strong {
+    display: block;
+    margin-top: 7px;
+    color: var(--green);
+    font-size: 1.4rem;
+}
+
+/* CLUES */
+
+.clue-grid,
+.answer-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.clue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.answer-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.clue-button,
+.answer-option {
+    padding: 16px;
+    color: var(--text);
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(4, 18, 31, .55);
+    cursor: pointer;
+}
+
+.clue-button {
+    min-height: 115px;
+}
+
+.clue-button:hover,
+.answer-option:hover {
+    border-color: var(--cyan);
+    background: rgba(88, 228, 255, .08);
+}
+
+.clue-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.clue-icon,
+.answer-icon {
+    font-size: 1.5rem;
+}
+
+.clue-number,
+.clue-button small,
+.answer-option small {
+    color: var(--muted);
+    font-size: .7rem;
+}
+
+.clue-button strong,
+.answer-option strong {
+    display: block;
+    margin-top: 8px;
+}
+
+.clue-result,
+.feedback-box {
+    margin-top: 18px;
+    padding: 16px;
+    color: var(--muted);
+    background: rgba(88, 228, 255, .06);
+    border-radius: 12px;
+    line-height: 1.7;
+}
+
+.clue-result {
+    border-left: 3px solid var(--cyan);
+}
+
+/* ANSWERS */
+
+.identification-panel {
+    margin-top: 26px;
+}
+
+.question-text {
+    margin-bottom: 22px;
+}
+
+.answer-option {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.feedback-box {
+    min-height: 65px;
+    border: 1px solid var(--border);
+}
+
+.action-row {
+    margin-top: 22px;
+}
+
+.primary-button,
+.secondary-button {
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.primary-button {
+    color: #04131d;
+    border: 1px solid var(--cyan);
+    background: var(--cyan);
+}
+
+.primary-button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.secondary-button {
+    color: var(--muted);
+    border: 1px solid var(--border);
+    background: transparent;
+}
+
+/* SCIENCE NOTE */
+
+.science-note {
+    display: flex;
+    gap: 16px;
+    margin-top: 26px;
+    padding: 24px;
+    border: 1px solid rgba(255, 229, 139, .2);
+    border-radius: 20px;
+    background: rgba(255, 229, 139, .045);
+}
+
+.science-note-icon {
+    font-size: 1.8rem;
+}
+
+.science-note h3 {
+    color: var(--yellow);
+}
+
+/* FOOTER */
+
+.lab-footer {
+    width: min(1400px, 92%);
+    margin: auto;
+    padding: 28px 0 35px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: .75rem;
+}
+
+.lab-footer a {
+    color: var(--cyan);
+    text-decoration: none;
+    font-weight: 800;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+    .investigation-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .answer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .back-button {
+        margin: 18px 4% 0;
+    }
+
+    .lab-header {
+        flex-wrap: wrap;
+    }
+
+    .header-brand {
+        width: 100%;
+    }
+
+    .clue-grid,
+    .answer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-card,
+    .progress-panel {
+        padding: 20px;
+    }
+
+    .progress-heading,
+    .action-row,
+    .lab-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+
+    .microscope-info {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+    }
+}

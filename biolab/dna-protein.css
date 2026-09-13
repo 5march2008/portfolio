@@ -1,0 +1,458 @@
+/* =====================================================
+   DNA TO PROTEIN TRANSLATOR
+   HUB OF TOMORROW • BIOLAB TOOL 02
+===================================================== */
+
+:root {
+    --background: #07111f;
+    --panel: #0d1b2e;
+    --panel-light: #122640;
+    --border: rgba(99, 210, 255, 0.25);
+
+    --cyan: #62eaff;
+    --green: #78ffb0;
+    --purple: #b995ff;
+    --yellow: #ffe08a;
+
+    --text: #eaf8ff;
+    --muted: #9bb5c9;
+    --danger: #ff8298;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding: 25px 18px;
+
+    font-family: Arial, sans-serif;
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(0, 220, 255, 0.13),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(157, 86, 255, 0.13),
+            transparent 35%
+        ),
+        var(--background);
+}
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.protein-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.protein-grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(98, 234, 255, 0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(98, 234, 255, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 40px 40px;
+}
+
+.protein-glow {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+
+    top: 15%;
+    right: 5%;
+
+    border-radius: 50%;
+    background: rgba(120, 255, 176, 0.07);
+    filter: blur(80px);
+}
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.protein-nav {
+    width: min(1100px, 100%);
+    margin: 0 auto 35px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.protein-brand {
+    color: var(--cyan);
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.protein-brand span {
+    display: block;
+    color: var(--green);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    margin-top: 5px;
+}
+
+.back-button {
+    color: var(--text);
+    text-decoration: none;
+
+    padding: 10px 15px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: rgba(13, 27, 46, 0.8);
+    transition: 0.25s ease;
+}
+
+.back-button:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+}
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.protein-main {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+}
+
+.protein-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--green);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+
+    margin-bottom: 15px;
+}
+
+.tool-badge span {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+}
+
+.protein-header h1 {
+    color: var(--cyan);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.15;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(98, 234, 255, 0.35);
+}
+
+.protein-header h1 strong {
+    color: var(--purple);
+}
+
+.protein-header p {
+    max-width: 650px;
+    margin: 0 auto;
+
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* =====================================================
+   PANELS
+===================================================== */
+
+.translator-panel,
+.translation-results {
+    padding: 25px;
+    margin-bottom: 25px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 38, 64, 0.96),
+            rgba(7, 17, 31, 0.96)
+        );
+
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+}
+
+.panel-top,
+.results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    margin-bottom: 22px;
+}
+
+.panel-label {
+    display: block;
+
+    color: var(--green);
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.panel-top h2,
+.results-heading h2 {
+    color: var(--text);
+    font-size: 1.4rem;
+}
+
+.panel-tag,
+.result-status {
+    color: var(--cyan);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 170px;
+
+    padding: 15px;
+
+    color: var(--text);
+    background: rgba(3, 12, 24, 0.9);
+
+    border: 1px solid rgba(98, 234, 255, 0.3);
+    border-radius: 12px;
+    outline: none;
+
+    resize: vertical;
+
+    font-family: Consolas, monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px rgba(98, 234, 255, 0.15);
+}
+
+.input-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    margin-top: 10px;
+
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.action-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+button {
+    padding: 12px 18px;
+
+    border-radius: 10px;
+    border: none;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+.translate-button {
+    color: #03111a;
+    background: var(--cyan);
+}
+
+.sample-button {
+    color: #07111f;
+    background: var(--green);
+}
+
+.clear-button {
+    color: white;
+    background: rgba(255, 130, 152, 0.18);
+    border: 1px solid rgba(255, 130, 152, 0.4);
+}
+
+.error-message {
+    min-height: 24px;
+    margin-top: 15px;
+
+    color: var(--yellow);
+    line-height: 1.5;
+}
+
+/* =====================================================
+   TRANSLATION CARDS
+===================================================== */
+
+.translation-card {
+    margin-bottom: 18px;
+    padding: 18px;
+
+    border: 1px solid rgba(185, 149, 255, 0.25);
+    border-radius: 14px;
+
+    background: rgba(3, 12, 24, 0.75);
+}
+
+.translation-card h3 {
+    color: var(--green);
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.sequence-output {
+    color: var(--purple);
+
+    font-family: Consolas, monospace;
+    font-size: 0.95rem;
+    line-height: 1.8;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.protein-output {
+    color: var(--yellow);
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+}
+
+/* =====================================================
+   SCIENCE NOTE
+===================================================== */
+
+.science-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+
+    margin-top: 22px;
+    padding: 18px;
+
+    border-left: 3px solid var(--cyan);
+    border-radius: 10px;
+
+    background: rgba(98, 234, 255, 0.06);
+}
+
+.science-note > span {
+    font-size: 1.5rem;
+}
+
+.science-note h3 {
+    color: var(--cyan);
+    margin-bottom: 8px;
+}
+
+.science-note p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.protein-footer {
+    text-align: center;
+    color: var(--muted);
+    margin-top: 30px;
+    padding-bottom: 15px;
+}
+
+.protein-footer strong {
+    color: var(--cyan);
+}
+
+.protein-footer p {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE
+===================================================== */
+
+@media (max-width: 650px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .translator-panel,
+    .translation-results {
+        padding: 18px;
+    }
+
+    .protein-nav {
+        margin-bottom: 25px;
+    }
+
+    .action-row button {
+        width: 100%;
+    }
+}
