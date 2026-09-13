@@ -132,3 +132,32 @@ certLightbox.addEventListener("click", function(e) {
     certLightbox.classList.remove("show");
   }
 });
+// Load and display certificates added through the CMS admin panel
+fetch('content/certificates.json')
+  .then(response => {
+    if (!response.ok) throw new Error('No certificates file yet');
+    return response.json();
+  })
+  .then(data => {
+    const grid = document.getElementById('dynamicCertGrid');
+    if (!data.items || data.items.length === 0) {
+      grid.innerHTML = '<p style="color:#DCE9EE;">No new certificates added yet. Use the admin panel to add some!</p>';
+      return;
+    }
+    grid.innerHTML = '';
+    data.items.forEach(cert => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        ${cert.image ? `<img src="${cert.image}" alt="${cert.title}" class="cert-img">` : ''}
+        <h3>${cert.title}</h3>
+        <p class="card-org">${cert.category || ''}</p>
+        ${cert.link ? `<a href="${cert.link}" target="_blank" class="discover-link">View <span class="arrow">→</span></a>` : ''}
+      `;
+      grid.appendChild(card);
+    });
+  })
+  .catch(() => {
+    const grid = document.getElementById('dynamicCertGrid');
+    if (grid) grid.innerHTML = '<p style="color:#DCE9EE;">No new certificates added yet. Use the admin panel to add some!</p>';
+  });
