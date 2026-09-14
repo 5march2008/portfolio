@@ -132,32 +132,70 @@ certLightbox.addEventListener("click", function(e) {
     certLightbox.classList.remove("show");
   }
 });
-// Load and display certificates added through the CMS admin panel
-fetch('content/certificates.json')
-  .then(response => {
-    if (!response.ok) throw new Error('No certificates file yet');
-    return response.json();
-  })
-  .then(data => {
-    const grid = document.getElementById('dynamicCertGrid');
-    if (!data.items || data.items.length === 0) {
-      grid.innerHTML = '<p style="color:#DCE9EE;">No new certificates added yet. Use the admin panel to add some!</p>';
+// Load certificates from Supabase
+const SUPABASE_URL = "https://kenpaoyjbicbvsogecmg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+async function loadCertificatesFromSupabase() {
+  const grid = document.getElementById("dynamicCertGrid");
+
+  if (!grid) return;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("certificates")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      grid.innerHTML =
+        '<p style="color:#DCE9EE;">No certificates added yet.</p>';
       return;
     }
-    grid.innerHTML = '';
-    data.items.forEach(cert => {
-      const card = document.createElement('div');
-      card.className = 'card';
+
+    grid.innerHTML = "";
+
+    data.forEach((cert) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
       card.innerHTML = `
-        ${cert.image ? `<img src="${cert.image}" alt="${cert.title}" class="cert-img">` : ''}
+        ${
+          cert.image_url
+            ? `<img src="${cert.image_url}" alt="${cert.title}" class="cert-img">`
+            : ""
+        }
+
         <h3>${cert.title}</h3>
-        <p class="card-org">${cert.category || ''}</p>
-        ${cert.link ? `<a href="${cert.link}" target="_blank" class="discover-link">View <span class="arrow">→</span></a>` : ''}
+
+        <p class="card-org">
+          ${cert.issuer || ""}
+        </p>
+
+        ${
+          cert.certificate_url
+            ? `<a href="${cert.certificate_url}" target="_blank" rel="noopener noreferrer" class="discover-link">
+                View Certificate <span class="arrow">→</span>
+              </a>`
+            : ""
+        }
       `;
+
       grid.appendChild(card);
     });
-  })
-  .catch(() => {
-    const grid = document.getElementById('dynamicCertGrid');
-    if (grid) grid.innerHTML = '<p style="color:#DCE9EE;">No new certificates added yet. Use the admin panel to add some!</p>';
-  });
+  } catch (error) {
+    console.error("Supabase certificate loading error:", error);
+
+    grid.innerHTML =
+      '<p style="color:#DCE9EE;">Unable to load certificates right now.</p>';
+  }
+}
+
+loadCertificatesFromSupabase();
