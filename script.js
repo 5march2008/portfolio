@@ -140,7 +140,6 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
-
 async function loadCertificatesFromSupabase() {
   const grid = document.getElementById("dynamicCertGrid");
 
@@ -155,11 +154,10 @@ async function loadCertificatesFromSupabase() {
     if (error) throw error;
 
     if (!data || data.length === 0) {
-      grid.innerHTML =
-        '<p style="color:#DCE9EE;">No certificates added yet.</p>';
       return;
     }
 
+    document.getElementById("new-certifications-section").style.display = "block";
     grid.innerHTML = "";
 
     data.forEach((cert) => {
