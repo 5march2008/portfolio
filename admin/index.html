@@ -162,6 +162,40 @@
     </a>
 
   </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+  const SUPABASE_URL = "https://kenpaoyjbicbvsogecmg.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const loginForm = document.getElementById("loginForm");
+  const message = document.getElementById("message");
+
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    message.textContent = "Signing in...";
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    window.location.href = "dashboard.html";
+  });
+</script>
 </body>
 </html>
