@@ -1,1 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Hubaib Ullah | Admin</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(63, 163, 77, 0.18), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(88, 80, 180, 0.18), transparent 30%),
+        #071317;
+      color: #eef8f4;
+    }
+
+    .admin-card {
+      width: min(430px, 92%);
+      padding: 38px;
+      border: 1px solid rgba(91, 220, 130, 0.25);
+      border-radius: 24px;
+      background: rgba(10, 25, 29, 0.88);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(14px);
+      text-align: center;
+    }
+
+    .dna-icon {
+      font-size: 46px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #9eb6bd;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      color: #c9dadd;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #29434a;
+      border-radius: 12px;
+      background: #0d2025;
+      color: #ffffff;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #5bdc82;
+      box-shadow: 0 0 0 3px rgba(91, 220, 130, 0.08);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3fa34d, #5bdc82);
+      color: #071317;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    #message {
+      min-height: 20px;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #ffb4b4;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 22px;
+      color: #8ed9ff;
+      text-decoration: none;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="admin-card">
+
+    <div class="dna-icon">🧬</div>
+
+    <h1>Hubaib Admin</h1>
+
+    <p class="subtitle">
+      Manage your biotechnology portfolio
+    </p>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Your admin email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Your password"
+          required
+        >
+      </div>
+
+      <button type="submit">
+        Sign In
+      </button>
+
+      <div id="message"></div>
+
+    </form>
+
+    <a class="back-link" href="../index.html">
+      ← Back to Portfolio
+    </a>
+
+  </main>
+
+</body>
+</html>
