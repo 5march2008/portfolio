@@ -1365,53 +1365,85 @@ body.is-scrolling .ray-group .ray {
   margin: 0 auto 20px;
   border-radius: 12px;
 }
-/* Two certificate cards per row on desktop and mobile */
+/* =====================================================
+   SUPABASE CERTIFICATES — MATCH OLD PORTFOLIO CARD DESIGN
+===================================================== */
+
 #dynamicCertGrid {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 16px;
+  gap: 24px;
   width: 100%;
+  align-items: stretch;
 }
 
-/* Certificate cards */
+/* Same card appearance as the existing portfolio cards */
 #dynamicCertGrid .card {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-width: 0;
+  height: 100%;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-/* Certificate images */
+/* Certificate image at the top */
 #dynamicCertGrid .cert-img {
   display: block;
   width: 100%;
-  height: 180px;
+  height: 220px;
   object-fit: contain;
-  margin: 0 auto 15px;
-  border-radius: 10px;
+  margin: 0 auto 18px;
+  border-radius: 12px;
 }
 
-/* Keep two columns even on mobile */
+/* Certificate title below image */
+#dynamicCertGrid .card h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+/* Issuer below title */
+#dynamicCertGrid .card .card-org {
+  margin: 0 0 16px;
+}
+
+/* Keep verification link at the bottom */
+#dynamicCertGrid .discover-link {
+  margin-top: auto;
+}
+
+/* Two cards per row on mobile too */
 @media screen and (max-width: 650px) {
   #dynamicCertGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px;
-  }
-
-  #dynamicCertGrid .cert-img {
-    height: 120px;
+    gap: 12px;
   }
 
   #dynamicCertGrid .card {
     padding: 12px;
   }
 
+  #dynamicCertGrid .cert-img {
+    width: 100%;
+    height: 125px;
+    object-fit: contain;
+    margin-bottom: 12px;
+  }
+
   #dynamicCertGrid .card h3 {
-    font-size: 14px;
+    font-size: 0.85rem;
     line-height: 1.3;
   }
 
-  #dynamicCertGrid .card p {
-    font-size: 12px;
+  #dynamicCertGrid .card .card-org {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  #dynamicCertGrid .discover-link {
+    font-size: 0.75rem;
   }
 }
