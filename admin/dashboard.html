@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Hubaib Admin Dashboard</title>
 
   <style>
@@ -25,22 +26,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 15px;
     }
 
     h1 {
       font-size: 24px;
     }
 
-    header p {
-      color: #8faab1;
-      margin-top: 5px;
-      font-size: 13px;
+    header p,
+    .muted {
+      color: #9eb6bd;
+      font-size: 14px;
+      margin-top: 6px;
     }
 
     button {
       border: none;
       border-radius: 10px;
-      padding: 11px 18px;
+      padding: 12px 18px;
       cursor: pointer;
       font-weight: 700;
     }
@@ -52,45 +55,123 @@
 
     main {
       width: min(1100px, 92%);
-      margin: 40px auto;
+      margin: 35px auto;
     }
 
-    .welcome {
-      padding: 30px;
+    .panel {
+      padding: 28px;
+      margin-bottom: 25px;
       border: 1px solid #23434a;
       border-radius: 20px;
       background: #0b1c21;
     }
 
-    .welcome h2 {
-      margin-bottom: 10px;
+    h2 {
+      margin-bottom: 20px;
+      color: #5bdc82;
     }
 
-    .welcome p {
-      color: #9eb6bd;
-    }
-
-    .cards {
+    form {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-top: 25px;
+      gap: 15px;
     }
 
-    .card {
-      padding: 25px;
-      border-radius: 18px;
-      background: #0d2025;
+    label {
+      display: grid;
+      gap: 7px;
+      color: #c9dadd;
+      font-size: 14px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px;
       border: 1px solid #29434a;
+      border-radius: 10px;
+      background: #0d2025;
+      color: white;
+      font: inherit;
     }
 
-    .card h3 {
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #5bdc82;
+    }
+
+    #saveBtn {
+      background: linear-gradient(135deg, #3fa34d, #5bdc82);
+      color: #071317;
+    }
+
+    #message {
+      min-height: 20px;
+      color: #8ed9ff;
+    }
+
+    .certificate-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .certificate-card {
+      padding: 20px;
+      border: 1px solid #29434a;
+      border-radius: 15px;
+      background: #0d2025;
+    }
+
+    .certificate-card img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      background: #071317;
+    }
+
+    .certificate-card h3 {
       margin-bottom: 8px;
     }
 
-    .card p {
-      color: #8faab1;
+    .certificate-card p {
+      color: #9eb6bd;
       font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .certificate-card a {
+      color: #8ed9ff;
+      display: inline-block;
+      margin: 8px 0 15px;
+    }
+
+    .delete-btn {
+      background: #8d3030;
+      color: white;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      #logoutBtn {
+        width: 100%;
+      }
+
+      .panel {
+        padding: 20px;
+      }
     }
   </style>
 </head>
@@ -108,26 +189,55 @@
 
   <main>
 
-    <section class="welcome">
-      <h2>Welcome to your dashboard</h2>
-      <p>
-        You are successfully signed in. From here you will manage
-        certificates and projects on your portfolio.
-      </p>
+    <section class="panel">
+      <h2>Add Certificate</h2>
+
+      <form id="certificateForm">
+
+        <label>
+          Certificate Title
+          <input type="text" id="title" required>
+        </label>
+
+        <label>
+          Issuer
+          <input type="text" id="issuer">
+        </label>
+
+        <label>
+          Description
+          <textarea id="description"></textarea>
+        </label>
+
+        <label>
+          Image URL
+          <input type="url" id="image_url" placeholder="https://...">
+        </label>
+
+        <label>
+          Certificate URL
+          <input type="url" id="certificate_url" placeholder="https://...">
+        </label>
+
+        <label>
+          Issue Date
+          <input type="date" id="issue_date">
+        </label>
+
+        <button type="submit" id="saveBtn">
+          Save Certificate
+        </button>
+
+        <p id="message"></p>
+
+      </form>
     </section>
 
-    <section class="cards">
-
-      <div class="card">
-        <h3>🏆 Certificates</h3>
-        <p>Add, edit and remove certificates.</p>
+    <section class="panel">
+      <h2>Saved Certificates</h2>
+      <div id="certificateList" class="certificate-list">
+        <p class="muted">Loading certificates...</p>
       </div>
-
-      <div class="card">
-        <h3>🧬 Projects</h3>
-        <p>Manage your biotechnology projects.</p>
-      </div>
-
     </section>
 
   </main>
@@ -136,12 +246,17 @@
 
   <script>
     const SUPABASE_URL = "https://kenpaoyjbicbvsogecmg.supabase.co";
+
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
 
     const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
+
+    const certificateForm = document.getElementById("certificateForm");
+    const certificateList = document.getElementById("certificateList");
+    const message = document.getElementById("message");
 
     async function checkLogin() {
       const { data } = await supabaseClient.auth.getSession();
@@ -151,12 +266,118 @@
       }
     }
 
+    async function loadCertificates() {
+      const { data, error } = await supabaseClient
+        .from("certificates")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        certificateList.innerHTML =
+          "<p>Unable to load certificates.</p>";
+        console.error(error);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        certificateList.innerHTML =
+          '<p class="muted">No certificates added yet.</p>';
+        return;
+      }
+
+      certificateList.innerHTML = "";
+
+      data.forEach((certificate) => {
+        const card = document.createElement("article");
+        card.className = "certificate-card";
+
+        card.innerHTML = `
+          ${
+            certificate.image_url
+              ? `<img src="${certificate.image_url}" alt="${certificate.title}">`
+              : ""
+          }
+
+          <h3>${certificate.title}</h3>
+
+          <p>${certificate.issuer || ""}</p>
+
+          <p>${certificate.description || ""}</p>
+
+          ${
+            certificate.certificate_url
+              ? `<a href="${certificate.certificate_url}" target="_blank">
+                  View Certificate
+                </a>`
+              : ""
+          }
+
+          <button class="delete-btn" data-id="${certificate.id}">
+            Delete
+          </button>
+        `;
+
+        card.querySelector(".delete-btn").addEventListener("click", () => {
+          deleteCertificate(certificate.id);
+        });
+
+        certificateList.appendChild(card);
+      });
+    }
+
+    certificateForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      message.textContent = "Saving certificate...";
+
+      const certificate = {
+        title: document.getElementById("title").value.trim(),
+        issuer: document.getElementById("issuer").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        image_url: document.getElementById("image_url").value.trim(),
+        certificate_url: document.getElementById("certificate_url").value.trim(),
+        issue_date: document.getElementById("issue_date").value || null
+      };
+
+      const { error } = await supabaseClient
+        .from("certificates")
+        .insert([certificate]);
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      message.textContent = "Certificate saved successfully.";
+      certificateForm.reset();
+      loadCertificates();
+    });
+
+    async function deleteCertificate(id) {
+      const confirmed = confirm("Delete this certificate?");
+
+      if (!confirmed) return;
+
+      const { error } = await supabaseClient
+        .from("certificates")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      loadCertificates();
+    }
+
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       await supabaseClient.auth.signOut();
       window.location.href = "index.html";
     });
 
     checkLogin();
+    loadCertificates();
   </script>
 
 </body>
