@@ -321,22 +321,18 @@ function escapeHTML(value) {
 ===================================================== */
 
 async function loadCertificatesFromSupabase() {
-  const grid = getElement("dynamicCertGrid");
-  const section = getElement(
+  const grid = document.getElementById("dynamicCertGrid");
+  const section = document.getElementById(
     "new-certifications-section"
   );
 
   if (!grid || !section) {
-    console.warn(
-      "Certificate section or certificate grid was not found."
-    );
+    console.error("Certificate section not found in HTML.");
     return;
   }
 
   if (!supabaseClient) {
-    console.error(
-      "Supabase client was not initialized."
-    );
+    console.error("Supabase client is not available.");
     return;
   }
 
@@ -352,74 +348,87 @@ async function loadCertificatesFromSupabase() {
       throw error;
     }
 
+    grid.innerHTML = "";
+
     if (!data || data.length === 0) {
-      console.log(
-        "No certificates were found in Supabase."
-      );
+      section.style.display = "none";
+      console.log("No certificates found.");
       return;
     }
 
     section.style.display = "block";
-    grid.innerHTML = "";
 
     data.forEach(function (cert) {
       const card = document.createElement("div");
       card.className = "card";
 
-      const title = escapeHTML(cert.title);
-      const issuer = escapeHTML(cert.issuer);
-      const imageURL = escapeHTML(cert.image_url);
-      const certificateURL = escapeHTML(
-        cert.certificate_url
-      );
+      /* Certificate image */
+      if (cert.image_url) {
+        const image = document.createElement("img");
 
-      card.innerHTML = `
-        ${
-          imageURL
-            ? `
-              <img
-                src="${imageURL}"
-                alt="${title}"
-                class="cert-img"
-                loading="lazy"
-                onerror="this.style.display='none';"
-              >
-            `
-            : `
-              <p class="card-org">
-                Certificate image not available.
-              </p>
-            `
-        }
+        image.src = cert.image_url;
+        image.alt = cert.title || "Certificate";
+        image.className = "cert-img";
+        image.loading = "lazy";
 
-        <h3>${title}</h3>
+        /* Open image in the existing lightbox */
+        image.style.cursor = "zoom-in";
 
-        <p class="card-org">
-          ${issuer}
-        </p>
+        image.addEventListener("click", function () {
+          const lightbox = document.getElementById(
+            "certLightbox"
+          );
 
-        ${
-          certificateURL
-            ? `
-              <a
-                href="${certificateURL}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="discover-link"
-              >
-                View Certificate
-                <span class="arrow">→</span>
-              </a>
-            `
-            : ""
-        }
-      `;
+          const lightboxImage = document.getElementById(
+            "certLightboxImg"
+          );
+
+          if (lightbox && lightboxImage) {
+            lightboxImage.src = cert.image_url;
+            lightbox.classList.add("show");
+          } else {
+            window.open(cert.image_url, "_blank");
+          }
+        });
+
+        card.appendChild(image);
+      }
+
+      /* Certificate title */
+      const title = document.createElement("h3");
+      title.textContent =
+        cert.title || "Untitled Certificate";
+
+      card.appendChild(title);
+
+      /* Issuer */
+      if (cert.issuer) {
+        const issuer = document.createElement("p");
+        issuer.className = "card-org";
+        issuer.textContent = cert.issuer;
+
+        card.appendChild(issuer);
+      }
+
+      /* Verification link */
+      if (cert.certificate_url) {
+        const link = document.createElement("a");
+
+        link.href = cert.certificate_url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "discover-link";
+        link.innerHTML =
+          'View Certificate <span class="arrow">→</span>';
+
+        card.appendChild(link);
+      }
 
       grid.appendChild(card);
     });
 
     console.log(
-      `${data.length} certificate(s) loaded successfully.`
+      data.length + " certificate(s) loaded successfully."
     );
   } catch (error) {
     console.error(
@@ -429,11 +438,13 @@ async function loadCertificatesFromSupabase() {
 
     grid.innerHTML = `
       <p style="color:#DCE9EE;">
-        Unable to load certificates right now.
+        Certificates could not be loaded.
       </p>
     `;
   }
 }
+
+loadCertificatesFromSupabase();
 
 
 /* =====================================================
