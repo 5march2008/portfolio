@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Hubaib Admin Dashboard</title>
 
   <style>
@@ -105,30 +104,30 @@
       border-color: #5bdc82;
     }
 
-    #saveBtn {
+    .save-btn {
       background: linear-gradient(135deg, #3fa34d, #5bdc82);
       color: #071317;
     }
 
-    #message {
+    .message {
       min-height: 20px;
       color: #8ed9ff;
     }
 
-    .certificate-list {
+    .item-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 18px;
     }
 
-    .certificate-card {
+    .item-card {
       padding: 20px;
       border: 1px solid #29434a;
       border-radius: 15px;
       background: #0d2025;
     }
 
-    .certificate-card img {
+    .item-card img {
       width: 100%;
       max-height: 180px;
       object-fit: contain;
@@ -137,17 +136,17 @@
       background: #071317;
     }
 
-    .certificate-card h3 {
+    .item-card h3 {
       margin-bottom: 8px;
     }
 
-    .certificate-card p {
+    .item-card p {
       color: #9eb6bd;
       font-size: 14px;
       margin-bottom: 8px;
     }
 
-    .certificate-card a {
+    .item-card a {
       color: #8ed9ff;
       display: inline-block;
       margin: 8px 0 15px;
@@ -189,6 +188,8 @@
 
   <main>
 
+    <!-- CERTIFICATES -->
+
     <section class="panel">
       <h2>Add Certificate</h2>
 
@@ -224,107 +225,129 @@
           <input type="date" id="issue_date">
         </label>
 
-        <button type="submit" id="saveBtn">
+        <button type="submit" class="save-btn">
           Save Certificate
         </button>
 
-        <p id="message"></p>
+        <p id="message" class="message"></p>
 
       </form>
     </section>
 
     <section class="panel">
       <h2>Saved Certificates</h2>
-      <div id="certificateList" class="certificate-list">
+      <div id="certificateList" class="item-list">
         <p class="muted">Loading certificates...</p>
       </div>
     </section>
-<section class="panel">
-  <h2>Add Project</h2>
 
-  <form id="projectForm">
+    <!-- PROJECTS -->
 
-    <label>
-      Project Title
-      <input type="text" id="project_title" required>
-    </label>
+    <section class="panel">
+      <h2>Add Project</h2>
 
-    <label>
-      Description
-      <textarea id="project_description" required></textarea>
-    </label>
+      <form id="projectForm">
 
-    <label>
-      Category
-      <input
-        type="text"
-        id="project_category"
-        placeholder="Biotechnology, Bioinformatics, Environment..."
-      >
-    </label>
+        <label>
+          Project Title
+          <input type="text" id="project_title" required>
+        </label>
 
-    <label>
-      Image URL
-      <input
-        type="url"
-        id="project_image_url"
-        placeholder="https://..."
-      >
-    </label>
+        <label>
+          Description
+          <textarea id="project_description" required></textarea>
+        </label>
 
-    <label>
-      Project URL
-      <input
-        type="url"
-        id="project_url"
-        placeholder="https://..."
-      >
-    </label>
+        <label>
+          Category
+          <input
+            type="text"
+            id="project_category"
+            placeholder="Bioinformatics, Biotechnology, Environment..."
+          >
+        </label>
 
-    <label>
-      Technologies
-      <input
-        type="text"
-        id="project_technologies"
-        placeholder="HTML, CSS, JavaScript, Python"
-      >
-    </label>
+        <label>
+          Image URL
+          <input
+            type="url"
+            id="project_image_url"
+            placeholder="https://..."
+          >
+        </label>
 
-    <button type="submit" id="projectSaveBtn">
-      Save Project
-    </button>
+        <label>
+          Project URL
+          <input
+            type="url"
+            id="project_url"
+            placeholder="https://..."
+          >
+        </label>
 
-    <p id="projectMessage"></p>
+        <label>
+          Technologies
+          <input
+            type="text"
+            id="project_technologies"
+            placeholder="HTML, CSS, JavaScript, Python"
+          >
+        </label>
 
-  </form>
-</section>
+        <button type="submit" class="save-btn">
+          Save Project
+        </button>
 
-<section class="panel">
-  <h2>Saved Projects</h2>
-  <div id="projectList" class="certificate-list">
-    <p class="muted">Loading projects...</p>
-  </div>
-</section>
+        <p id="projectMessage" class="message"></p>
+
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Saved Projects</h2>
+
+      <div id="projectList" class="item-list">
+        <p class="muted">Loading projects...</p>
+      </div>
+    </section>
+
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    const SUPABASE_URL = "https://kenpaoyjbicbvsogecmg.supabase.co";
+    const SUPABASE_URL =
+      "https://kenpaoyjbicbvsogecmg.supabase.co";
 
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
 
     const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    const certificateForm = document.getElementById("certificateForm");
-    const certificateList = document.getElementById("certificateList");
-    const message = document.getElementById("message");
+    const certificateForm =
+      document.getElementById("certificateForm");
+
+    const certificateList =
+      document.getElementById("certificateList");
+
+    const message =
+      document.getElementById("message");
+
+    const projectForm =
+      document.getElementById("projectForm");
+
+    const projectList =
+      document.getElementById("projectList");
+
+    const projectMessage =
+      document.getElementById("projectMessage");
 
     async function checkLogin() {
-      const { data } = await supabaseClient.auth.getSession();
+      const { data } =
+        await supabaseClient.auth.getSession();
 
       if (!data.session) {
         window.location.href = "index.html";
@@ -332,10 +355,11 @@
     }
 
     async function loadCertificates() {
-      const { data, error } = await supabaseClient
-        .from("certificates")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const { data, error } =
+        await supabaseClient
+          .from("certificates")
+          .select("*")
+          .order("created_at", { ascending: false });
 
       if (error) {
         certificateList.innerHTML =
@@ -354,7 +378,7 @@
 
       data.forEach((certificate) => {
         const card = document.createElement("article");
-        card.className = "certificate-card";
+        card.className = "item-card";
 
         card.innerHTML = `
           ${
@@ -377,14 +401,15 @@
               : ""
           }
 
-          <button class="delete-btn" data-id="${certificate.id}">
+          <button class="delete-btn">
             Delete
           </button>
         `;
 
-        card.querySelector(".delete-btn").addEventListener("click", () => {
-          deleteCertificate(certificate.id);
-        });
+        card.querySelector(".delete-btn")
+          .addEventListener("click", () => {
+            deleteCertificate(certificate.id);
+          });
 
         certificateList.appendChild(card);
       });
@@ -400,33 +425,38 @@
         issuer: document.getElementById("issuer").value.trim(),
         description: document.getElementById("description").value.trim(),
         image_url: document.getElementById("image_url").value.trim(),
-        certificate_url: document.getElementById("certificate_url").value.trim(),
-        issue_date: document.getElementById("issue_date").value || null
+        certificate_url: document
+          .getElementById("certificate_url")
+          .value.trim(),
+        issue_date:
+          document.getElementById("issue_date").value || null
       };
 
-      const { error } = await supabaseClient
-        .from("certificates")
-        .insert([certificate]);
+      const { error } =
+        await supabaseClient
+          .from("certificates")
+          .insert([certificate]);
 
       if (error) {
         message.textContent = error.message;
         return;
       }
 
-      message.textContent = "Certificate saved successfully.";
+      message.textContent =
+        "Certificate saved successfully.";
+
       certificateForm.reset();
       loadCertificates();
     });
 
     async function deleteCertificate(id) {
-      const confirmed = confirm("Delete this certificate?");
+      if (!confirm("Delete this certificate?")) return;
 
-      if (!confirmed) return;
-
-      const { error } = await supabaseClient
-        .from("certificates")
-        .delete()
-        .eq("id", id);
+      const { error } =
+        await supabaseClient
+          .from("certificates")
+          .delete()
+          .eq("id", id);
 
       if (error) {
         alert(error.message);
@@ -436,13 +466,149 @@
       loadCertificates();
     }
 
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await supabaseClient.auth.signOut();
-      window.location.href = "index.html";
+    async function loadProjects() {
+      const { data, error } =
+        await supabaseClient
+          .from("projects")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+      if (error) {
+        projectList.innerHTML =
+          "<p>Unable to load projects.</p>";
+        console.error(error);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        projectList.innerHTML =
+          '<p class="muted">No projects added yet.</p>';
+        return;
+      }
+
+      projectList.innerHTML = "";
+
+      data.forEach((project) => {
+        const card = document.createElement("article");
+        card.className = "item-card";
+
+        card.innerHTML = `
+          ${
+            project.image_url
+              ? `<img src="${project.image_url}" alt="${project.title}">`
+              : ""
+          }
+
+          <h3>${project.title}</h3>
+
+          <p>${project.category || ""}</p>
+
+          <p>${project.description || ""}</p>
+
+          <p>
+            <strong>Technologies:</strong>
+            ${project.technologies || ""}
+          </p>
+
+          ${
+            project.project_url
+              ? `<a href="${project.project_url}" target="_blank">
+                  View Project
+                </a>`
+              : ""
+          }
+
+          <button class="delete-btn">
+            Delete
+          </button>
+        `;
+
+        card.querySelector(".delete-btn")
+          .addEventListener("click", () => {
+            deleteProject(project.id);
+          });
+
+        projectList.appendChild(card);
+      });
+    }
+
+    projectForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      projectMessage.textContent =
+        "Saving project...";
+
+      const project = {
+        title: document
+          .getElementById("project_title")
+          .value.trim(),
+
+        description: document
+          .getElementById("project_description")
+          .value.trim(),
+
+        category: document
+          .getElementById("project_category")
+          .value.trim(),
+
+        image_url: document
+          .getElementById("project_image_url")
+          .value.trim(),
+
+        project_url: document
+          .getElementById("project_url")
+          .value.trim(),
+
+        technologies: document
+          .getElementById("project_technologies")
+          .value.trim()
+      };
+
+      const { error } =
+        await supabaseClient
+          .from("projects")
+          .insert([project]);
+
+      if (error) {
+        projectMessage.textContent =
+          error.message;
+        return;
+      }
+
+      projectMessage.textContent =
+        "Project saved successfully.";
+
+      projectForm.reset();
+      loadProjects();
     });
+
+    async function deleteProject(id) {
+      if (!confirm("Delete this project?")) return;
+
+      const { error } =
+        await supabaseClient
+          .from("projects")
+          .delete()
+          .eq("id", id);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      loadProjects();
+    }
+
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = "index.html";
+      });
 
     checkLogin();
     loadCertificates();
+    loadProjects();
   </script>
 
 </body>
