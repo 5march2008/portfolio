@@ -239,7 +239,72 @@
         <p class="muted">Loading certificates...</p>
       </div>
     </section>
+<section class="panel">
+  <h2>Add Project</h2>
 
+  <form id="projectForm">
+
+    <label>
+      Project Title
+      <input type="text" id="project_title" required>
+    </label>
+
+    <label>
+      Description
+      <textarea id="project_description" required></textarea>
+    </label>
+
+    <label>
+      Category
+      <input
+        type="text"
+        id="project_category"
+        placeholder="Biotechnology, Bioinformatics, Environment..."
+      >
+    </label>
+
+    <label>
+      Image URL
+      <input
+        type="url"
+        id="project_image_url"
+        placeholder="https://..."
+      >
+    </label>
+
+    <label>
+      Project URL
+      <input
+        type="url"
+        id="project_url"
+        placeholder="https://..."
+      >
+    </label>
+
+    <label>
+      Technologies
+      <input
+        type="text"
+        id="project_technologies"
+        placeholder="HTML, CSS, JavaScript, Python"
+      >
+    </label>
+
+    <button type="submit" id="projectSaveBtn">
+      Save Project
+    </button>
+
+    <p id="projectMessage"></p>
+
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Saved Projects</h2>
+  <div id="projectList" class="certificate-list">
+    <p class="muted">Loading projects...</p>
+  </div>
+</section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
