@@ -1355,18 +1355,8 @@ body.is-scrolling .ray-group .ray {
   border-top: 1px solid #E3DFD3;
   margin-top: 48px;
 }
-/* Supabase certificate images */
-.cert-img {
-  display: block;
-  width: 100%;
-  max-width: 280px;
-  height: 220px;
-  object-fit: contain;
-  margin: 0 auto 20px;
-  border-radius: 12px;
-}
 /* =====================================================
-   SUPABASE CERTIFICATES — MATCH OLD PORTFOLIO CARD DESIGN
+   SUPABASE CERTIFICATE CARDS
 ===================================================== */
 
 #dynamicCertGrid {
@@ -1377,45 +1367,73 @@ body.is-scrolling .ray-group .ray {
   align-items: stretch;
 }
 
-/* Same card appearance as the existing portfolio cards */
+/* Match the existing dark portfolio card style */
 #dynamicCertGrid .card {
   display: flex;
   flex-direction: column;
-  width: 100%;
   min-width: 0;
   height: 100%;
   box-sizing: border-box;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 224, 255, 0.25);
+  border-radius: 14px;
   overflow: hidden;
+  transition: transform 0.25s ease,
+              box-shadow 0.25s ease,
+              background 0.25s ease;
 }
 
-/* Certificate image at the top */
+#dynamicCertGrid .card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 10px 24px rgba(0, 224, 255, 0.18);
+}
+
+/* Image at the top of the card */
 #dynamicCertGrid .cert-img {
   display: block;
   width: 100%;
   height: 220px;
   object-fit: contain;
+  background: #0f2018;
+  border-radius: 10px;
   margin: 0 auto 18px;
-  border-radius: 12px;
 }
 
-/* Certificate title below image */
+/* Title below the image */
 #dynamicCertGrid .card h3 {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
-  line-height: 1.35;
+  color: #ffffff;
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  margin: 0 0 8px;
 }
 
 /* Issuer below title */
 #dynamicCertGrid .card .card-org {
+  color: #a9c4cf;
+  font-size: 0.85rem;
+  line-height: 1.4;
   margin: 0 0 16px;
 }
 
-/* Keep verification link at the bottom */
+/* View certificate link */
 #dynamicCertGrid .discover-link {
+  display: inline-block;
   margin-top: auto;
+  color: #00e0ff;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border-bottom: none;
 }
 
-/* Two cards per row on mobile too */
+#dynamicCertGrid .discover-link:hover {
+  color: #39ffb0;
+  border-bottom: none;
+}
+
+/* Keep two cards per row on mobile */
 @media screen and (max-width: 650px) {
   #dynamicCertGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -1423,27 +1441,28 @@ body.is-scrolling .ray-group .ray {
   }
 
   #dynamicCertGrid .card {
-    padding: 12px;
+    padding: 10px;
+    border-radius: 12px;
   }
 
   #dynamicCertGrid .cert-img {
-    width: 100%;
     height: 125px;
-    object-fit: contain;
     margin-bottom: 12px;
+    border-radius: 8px;
   }
 
   #dynamicCertGrid .card h3 {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     line-height: 1.3;
   }
 
   #dynamicCertGrid .card .card-org {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     line-height: 1.3;
   }
 
   #dynamicCertGrid .discover-link {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 }
+
