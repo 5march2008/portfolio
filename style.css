@@ -1365,3 +1365,53 @@ body.is-scrolling .ray-group .ray {
   margin: 0 auto 20px;
   border-radius: 12px;
 }
+/* Two certificate cards per row on desktop and mobile */
+#dynamicCertGrid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Certificate cards */
+#dynamicCertGrid .card {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Certificate images */
+#dynamicCertGrid .cert-img {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin: 0 auto 15px;
+  border-radius: 10px;
+}
+
+/* Keep two columns even on mobile */
+@media screen and (max-width: 650px) {
+  #dynamicCertGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+
+  #dynamicCertGrid .cert-img {
+    height: 120px;
+  }
+
+  #dynamicCertGrid .card {
+    padding: 12px;
+  }
+
+  #dynamicCertGrid .card h3 {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  #dynamicCertGrid .card p {
+    font-size: 12px;
+  }
+}
