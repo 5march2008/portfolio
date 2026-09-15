@@ -197,3 +197,79 @@ async function loadCertificatesFromSupabase() {
 }
 
 loadCertificatesFromSupabase();
+// Load projects from Supabase
+async function loadProjectsFromSupabase() {
+  const projectGrid = document.getElementById("dynamicProjectGrid");
+
+  if (!projectGrid) return;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      return;
+    }
+
+    const projectSection =
+      document.getElementById("new-projects-section");
+
+    if (projectSection) {
+      projectSection.style.display = "block";
+    }
+
+    projectGrid.innerHTML = "";
+
+    data.forEach((project) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        ${
+          project.image_url
+            ? `<img src="${project.image_url}" alt="${project.title}" class="cert-img">`
+            : ""
+        }
+
+        <h3>${project.title}</h3>
+
+        <p class="card-org">
+          ${project.category || ""}
+        </p>
+
+        <p>
+          ${project.description || ""}
+        </p>
+
+        ${
+          project.technologies
+            ? `<p class="card-org">
+                Technologies: ${project.technologies}
+              </p>`
+            : ""
+        }
+
+        ${
+          project.project_url
+            ? `<a href="${project.project_url}" target="_blank" rel="noopener noreferrer" class="discover-link">
+                View Project <span class="arrow">→</span>
+              </a>`
+            : ""
+        }
+      `;
+
+      projectGrid.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Supabase project loading error:", error);
+
+    projectGrid.innerHTML =
+      '<p style="color:#DCE9EE;">Unable to load projects right now.</p>';
+  }
+}
+
+loadProjectsFromSupabase();
