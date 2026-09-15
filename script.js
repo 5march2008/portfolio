@@ -1,58 +1,138 @@
-// Fix: prevent browser from jumping to a scroll position (e.g. #contact-form) on refresh
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
+/* =====================================================
+   PAGE LOAD / SCROLL POSITION FIX
+===================================================== */
+
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
 }
-window.addEventListener('load', function() {
+
+window.addEventListener("load", function () {
   if (window.location.hash) {
-    history.replaceState(null, '', window.location.pathname + window.location.search);
+    history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search
+    );
   }
+
   window.scrollTo(0, 0);
 });
 
-// Certifications toggle (show/hide the whole organization list)
-document.getElementById("certToggle").addEventListener("click", function() {
-  const accordion = document.getElementById("orgAccordion");
-  accordion.style.display = accordion.style.display === "none" ? "block" : "none";
-});
 
-// Rehal (Education) toggle - works both ways
-document.getElementById("rehalToggle").addEventListener("click", function() {
-  const closed = document.getElementById("rehalClosed");
-  const open = document.getElementById("rehalOpen");
-  const label = document.getElementById("rehalToggleLabel");
-  if (open.style.display === "none" || open.style.display === "") {
-    closed.style.display = "none";
-    open.style.display = "block";
-    label.textContent = "🔒 Close";
-  } else {
-    closed.style.display = "block";
-    open.style.display = "none";
-    label.textContent = "🔓 Explore Me";
-  }
-});
+/* =====================================================
+   HELPER FUNCTION
+===================================================== */
 
-// Animated rotating role text
-const roles = ["a Science Student", "an Aspiring Biotechnologist", "an Independent Learner"];
+function getElement(id) {
+  return document.getElementById(id);
+}
+
+
+/* =====================================================
+   CERTIFICATIONS TOGGLE
+===================================================== */
+
+const certToggle = getElement("certToggle");
+const orgAccordion = getElement("orgAccordion");
+
+if (certToggle && orgAccordion) {
+  certToggle.addEventListener("click", function () {
+    const isHidden =
+      orgAccordion.style.display === "none" ||
+      orgAccordion.style.display === "";
+
+    orgAccordion.style.display = isHidden ? "block" : "none";
+  });
+}
+
+
+/* =====================================================
+   REHAL EDUCATION TOGGLE
+===================================================== */
+
+const rehalToggle = getElement("rehalToggle");
+const rehalClosed = getElement("rehalClosed");
+const rehalOpen = getElement("rehalOpen");
+const rehalToggleLabel = getElement("rehalToggleLabel");
+
+if (
+  rehalToggle &&
+  rehalClosed &&
+  rehalOpen &&
+  rehalToggleLabel
+) {
+  rehalToggle.addEventListener("click", function () {
+    const isClosed =
+      rehalOpen.style.display === "none" ||
+      rehalOpen.style.display === "";
+
+    if (isClosed) {
+      rehalClosed.style.display = "none";
+      rehalOpen.style.display = "block";
+      rehalToggleLabel.textContent = "🔒 Close";
+    } else {
+      rehalClosed.style.display = "block";
+      rehalOpen.style.display = "none";
+      rehalToggleLabel.textContent = "🔓 Explore Me";
+    }
+  });
+}
+
+
+/* =====================================================
+   ANIMATED ROLE TEXT
+===================================================== */
+
+const roleText = getElement("roleText");
+
+const roles = [
+  "a Science Student",
+  "an Aspiring Biotechnologist",
+  "an Independent Learner"
+];
+
 let roleIndex = 0;
-setInterval(() => {
-  roleIndex = (roleIndex + 1) % roles.length;
-  document.getElementById("roleText").textContent = roles[roleIndex];
-}, 2500);
 
-// Hamburger nav toggle
-document.getElementById("navToggle").addEventListener("click", function() {
-  document.getElementById("navLinks").classList.toggle("open");
-  this.classList.toggle("is-open");
-});
+if (roleText) {
+  setInterval(function () {
+    roleIndex = (roleIndex + 1) % roles.length;
+    roleText.textContent = roles[roleIndex];
+  }, 2500);
+}
 
-// Stat counters (count up on load)
+
+/* =====================================================
+   HAMBURGER NAVIGATION
+===================================================== */
+
+const navToggle = getElement("navToggle");
+const navLinks = getElement("navLinks");
+
+if (navToggle && navLinks) {
+  navToggle.addEventListener("click", function () {
+    navLinks.classList.toggle("open");
+    navToggle.classList.toggle("is-open");
+  });
+}
+
+
+/* =====================================================
+   STAT COUNTERS
+===================================================== */
+
 const statNumbers = document.querySelectorAll(".stat-number");
-statNumbers.forEach(stat => {
-  const target = parseInt(stat.getAttribute("data-target"));
+
+statNumbers.forEach(function (stat) {
+  const target = parseInt(stat.getAttribute("data-target"), 10);
+
+  if (isNaN(target)) return;
+
   let current = 0;
   const increment = target / 30;
-  const counter = setInterval(() => {
+
+  const counter = setInterval(function () {
     current += increment;
+
     if (current >= target) {
       stat.textContent = target;
       clearInterval(counter);
@@ -62,32 +142,61 @@ statNumbers.forEach(stat => {
   }, 40);
 });
 
-// Scroll-reveal animation for sections
-const revealElements = document.querySelectorAll(".reveal");
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("active");
-    }
-  });
-}, { threshold: 0.15 });
-revealElements.forEach(el => revealObserver.observe(el));
 
-// Pause heavy Certifications animations while actively scrolling (fixes stutter)
-// and show a brief fade overlay during very fast scrolling
+/* =====================================================
+   SCROLL REVEAL ANIMATION
+===================================================== */
+
+const revealElements = document.querySelectorAll(".reveal");
+
+if ("IntersectionObserver" in window) {
+  const revealObserver = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+        }
+      });
+    },
+    {
+      threshold: 0.15
+    }
+  );
+
+  revealElements.forEach(function (element) {
+    revealObserver.observe(element);
+  });
+} else {
+  revealElements.forEach(function (element) {
+    element.classList.add("active");
+  });
+}
+
+
+/* =====================================================
+   SCROLL PERFORMANCE FIX
+===================================================== */
+
 let scrollStopTimer;
 let lastScrollTop = window.scrollY;
 let lastScrollTime = performance.now();
-const fadeOverlay = document.querySelector(".scroll-fade-overlay");
 
-window.addEventListener('scroll', () => {
-  document.body.classList.add('is-scrolling');
+const fadeOverlay = document.querySelector(
+  ".scroll-fade-overlay"
+);
+
+window.addEventListener("scroll", function () {
+  document.body.classList.add("is-scrolling");
 
   const now = performance.now();
   const currentScrollTop = window.scrollY;
   const timeDelta = now - lastScrollTime;
-  const distance = Math.abs(currentScrollTop - lastScrollTop);
-  const speed = timeDelta > 0 ? distance / timeDelta : 0;
+  const distance = Math.abs(
+    currentScrollTop - lastScrollTop
+  );
+
+  const speed =
+    timeDelta > 0 ? distance / timeDelta : 0;
 
   if (fadeOverlay && speed > 2.5) {
     fadeOverlay.classList.add("show");
@@ -97,126 +206,268 @@ window.addEventListener('scroll', () => {
   lastScrollTime = now;
 
   clearTimeout(scrollStopTimer);
-  scrollStopTimer = setTimeout(() => {
-    document.body.classList.remove('is-scrolling');
-    if (fadeOverlay) fadeOverlay.classList.remove("show");
+
+  scrollStopTimer = setTimeout(function () {
+    document.body.classList.remove("is-scrolling");
+
+    if (fadeOverlay) {
+      fadeOverlay.classList.remove("show");
+    }
   }, 150);
 });
 
-// Certificate lightbox: local certificate images open in-page; real verification links open externally
-const certLightbox = document.getElementById("certLightbox");
-const certLightboxImg = document.getElementById("certLightboxImg");
-const certLightboxClose = document.getElementById("certLightboxClose");
 
-document.querySelectorAll(".cert-node, .legend-item, .feature-cert-link, .feature-view-link").forEach(function(link) {
-  link.addEventListener("click", function(e) {
-    const href = this.getAttribute("href");
-    const isLocalCertificate = href && href.startsWith("assets/certifications/");
-    if (isLocalCertificate) {
-      e.preventDefault();
-      const img = this.querySelector("img") || (this.tagName === "IMG" ? this : null);
-      const imgSrc = img ? img.src : href;
-      certLightboxImg.src = imgSrc;
+/* =====================================================
+   CERTIFICATE LIGHTBOX
+===================================================== */
+
+const certLightbox = getElement("certLightbox");
+const certLightboxImg = getElement("certLightboxImg");
+const certLightboxClose = getElement(
+  "certLightboxClose"
+);
+
+const certificateLinks = document.querySelectorAll(
+  ".cert-node, .legend-item, .feature-cert-link, .feature-view-link"
+);
+
+certificateLinks.forEach(function (link) {
+  link.addEventListener("click", function (event) {
+    const href = link.getAttribute("href");
+
+    const isLocalCertificate =
+      href &&
+      href.startsWith("assets/certifications/");
+
+    if (
+      isLocalCertificate &&
+      certLightbox &&
+      certLightboxImg
+    ) {
+      event.preventDefault();
+
+      const image =
+        link.querySelector("img") ||
+        (link.tagName === "IMG" ? link : null);
+
+      const imageSource =
+        image && image.src ? image.src : href;
+
+      certLightboxImg.src = imageSource;
       certLightbox.classList.add("show");
     }
-    // otherwise, real verification link — let it open normally in a new tab
   });
 });
 
-certLightboxClose.addEventListener("click", function() {
-  certLightbox.classList.remove("show");
-});
-
-certLightbox.addEventListener("click", function(e) {
-  if (e.target === certLightbox) {
+if (certLightboxClose && certLightbox) {
+  certLightboxClose.addEventListener("click", function () {
     certLightbox.classList.remove("show");
-  }
-});
-// Load certificates from Supabase
-const SUPABASE_URL = "https://kenpaoyjbicbvsogecmg.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
+  });
+}
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+if (certLightbox) {
+  certLightbox.addEventListener("click", function (event) {
+    if (event.target === certLightbox) {
+      certLightbox.classList.remove("show");
+    }
+  });
+}
+
+
+/* =====================================================
+   SUPABASE CONNECTION
+===================================================== */
+
+/*
+  Keep your existing Supabase values here.
+  Do not share your key publicly.
+*/
+
+const SUPABASE_URL =
+  "https://kenpaoyjbicbvsogecmg.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_ftendUcY6moUA8ty4w3dfA_HMEqFD7p";
+
+let supabaseClient = null;
+
+if (
+  window.supabase &&
+  typeof window.supabase.createClient === "function"
+) {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+}
+
+
+/* =====================================================
+   SAFE TEXT FUNCTION
+===================================================== */
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* =====================================================
+   LOAD CERTIFICATES FROM SUPABASE
+===================================================== */
+
 async function loadCertificatesFromSupabase() {
-  const grid = document.getElementById("dynamicCertGrid");
+  const grid = getElement("dynamicCertGrid");
+  const section = getElement(
+    "new-certifications-section"
+  );
 
-  if (!grid) return;
+  if (!grid || !section) {
+    console.warn(
+      "Certificate section or certificate grid was not found."
+    );
+    return;
+  }
+
+  if (!supabaseClient) {
+    console.error(
+      "Supabase client was not initialized."
+    );
+    return;
+  }
 
   try {
     const { data, error } = await supabaseClient
       .from("certificates")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", {
+        ascending: false
+      });
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
     if (!data || data.length === 0) {
+      console.log(
+        "No certificates were found in Supabase."
+      );
       return;
     }
 
-    document.getElementById("new-certifications-section").style.display = "block";
+    section.style.display = "block";
     grid.innerHTML = "";
 
-    data.forEach((cert) => {
+    data.forEach(function (cert) {
       const card = document.createElement("div");
       card.className = "card";
 
+      const title = escapeHTML(cert.title);
+      const issuer = escapeHTML(cert.issuer);
+      const imageURL = escapeHTML(cert.image_url);
+      const certificateURL = escapeHTML(
+        cert.certificate_url
+      );
+
       card.innerHTML = `
         ${
-          cert.image_url
-            ? `<img src="${cert.image_url}" alt="${cert.title}" class="cert-img">`
-            : ""
+          imageURL
+            ? `
+              <img
+                src="${imageURL}"
+                alt="${title}"
+                class="cert-img"
+                loading="lazy"
+                onerror="this.style.display='none';"
+              >
+            `
+            : `
+              <p class="card-org">
+                Certificate image not available.
+              </p>
+            `
         }
 
-        <h3>${cert.title}</h3>
+        <h3>${title}</h3>
 
         <p class="card-org">
-          ${cert.issuer || ""}
+          ${issuer}
         </p>
 
         ${
-          cert.certificate_url
-            ? `<a href="${cert.certificate_url}" target="_blank" rel="noopener noreferrer" class="discover-link">
-                View Certificate <span class="arrow">→</span>
-              </a>`
+          certificateURL
+            ? `
+              <a
+                href="${certificateURL}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="discover-link"
+              >
+                View Certificate
+                <span class="arrow">→</span>
+              </a>
+            `
             : ""
         }
       `;
 
       grid.appendChild(card);
     });
-  } catch (error) {
-    console.error("Supabase certificate loading error:", error);
 
-    grid.innerHTML =
-      '<p style="color:#DCE9EE;">Unable to load certificates right now.</p>';
+    console.log(
+      `${data.length} certificate(s) loaded successfully.`
+    );
+  } catch (error) {
+    console.error(
+      "Supabase certificate loading error:",
+      error
+    );
+
+    grid.innerHTML = `
+      <p style="color:#DCE9EE;">
+        Unable to load certificates right now.
+      </p>
+    `;
   }
 }
 
-loadCertificatesFromSupabase();
-// Load projects from Supabase
-async function loadProjectsFromSupabase() {
-  const projectGrid = document.getElementById("dynamicProjectGrid");
 
-  if (!projectGrid) return;
+/* =====================================================
+   LOAD PROJECTS FROM SUPABASE
+===================================================== */
+
+async function loadProjectsFromSupabase() {
+  const projectGrid = getElement(
+    "dynamicProjectGrid"
+  );
+
+  if (!projectGrid || !supabaseClient) {
+    return;
+  }
 
   try {
     const { data, error } = await supabaseClient
       .from("projects")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", {
+        ascending: false
+      });
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
     if (!data || data.length === 0) {
       return;
     }
 
-    const projectSection =
-      document.getElementById("new-projects-section");
+    const projectSection = getElement(
+      "new-projects-section"
+    );
 
     if (projectSection) {
       projectSection.style.display = "block";
@@ -224,52 +475,103 @@ async function loadProjectsFromSupabase() {
 
     projectGrid.innerHTML = "";
 
-    data.forEach((project) => {
+    data.forEach(function (project) {
       const card = document.createElement("div");
       card.className = "card";
 
+      const title = escapeHTML(project.title);
+      const category = escapeHTML(
+        project.category
+      );
+      const description = escapeHTML(
+        project.description
+      );
+      const technologies = escapeHTML(
+        project.technologies
+      );
+      const imageURL = escapeHTML(
+        project.image_url
+      );
+      const projectURL = escapeHTML(
+        project.project_url
+      );
+
       card.innerHTML = `
         ${
-          project.image_url
-            ? `<img src="${project.image_url}" alt="${project.title}" class="cert-img">`
+          imageURL
+            ? `
+              <img
+                src="${imageURL}"
+                alt="${title}"
+                class="cert-img"
+                loading="lazy"
+                onerror="this.style.display='none';"
+              >
+            `
             : ""
         }
 
-        <h3>${project.title}</h3>
+        <h3>${title}</h3>
 
         <p class="card-org">
-          ${project.category || ""}
+          ${category}
         </p>
 
         <p>
-          ${project.description || ""}
+          ${description}
         </p>
 
         ${
-          project.technologies
-            ? `<p class="card-org">
-                Technologies: ${project.technologies}
-              </p>`
+          technologies
+            ? `
+              <p class="card-org">
+                Technologies: ${technologies}
+              </p>
+            `
             : ""
         }
 
         ${
-          project.project_url
-            ? `<a href="${project.project_url}" target="_blank" rel="noopener noreferrer" class="discover-link">
-                View Project <span class="arrow">→</span>
-              </a>`
+          projectURL
+            ? `
+              <a
+                href="${projectURL}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="discover-link"
+              >
+                View Project
+                <span class="arrow">→</span>
+              </a>
+            `
             : ""
         }
       `;
 
       projectGrid.appendChild(card);
     });
-  } catch (error) {
-    console.error("Supabase project loading error:", error);
 
-    projectGrid.innerHTML =
-      '<p style="color:#DCE9EE;">Unable to load projects right now.</p>';
+    console.log(
+      `${data.length} project(s) loaded successfully.`
+    );
+  } catch (error) {
+    console.error(
+      "Supabase project loading error:",
+      error
+    );
+
+    projectGrid.innerHTML = `
+      <p style="color:#DCE9EE;">
+        Unable to load projects right now.
+      </p>
+    `;
   }
 }
 
+
+/* =====================================================
+   START SUPABASE LOADERS
+===================================================== */
+
+loadCertificatesFromSupabase();
 loadProjectsFromSupabase();
